@@ -1,0 +1,274 @@
+ // hw3.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include<array>
+using namespace std;
+
+void choiceA(double &GPA, double &gpaScore, double hours) {
+GPA = gpaScore / hours;
+cout << endl;
+cout << "Your GPA is " << GPA << endl;
+
+if (GPA >= 3.01)
+cout << "You're doing a fantastic job\n";
+else if (GPA == 3.0)
+cout << "Keep up the good work\n";
+else
+cout << "Do a better job\n";
+cout << endl;
+}
+
+void choiceB(int &numClass, string courseName[10], string semester[10], string inputCourse[10], char grade[10], int arrayHours[10]) {
+for (int x = 0; x < numClass; x++) {
+cout << courseName[x] << endl;
+cout << semester[x] << endl;
+cout << inputCourse[x] << endl;
+cout << grade[x] << endl;
+cout << arrayHours[x] << endl;
+}
+}
+
+void choiceC(int &numClass, double score[10], int& total, int arrayHours[10] ) {
+for (int x = 0; x < numClass; x++)
+if (score[x] == 1) {
+total += arrayHours[x];
+}
+cout << endl;
+cout << "The total number of hours with a grade D are " << total << endl;
+cout << endl;
+total = 0;
+}
+
+void choiceD(int &numClass, string &dSemester, string semester[10], int arrayHours[10], double score[10]){
+cout << endl;
+cout << "Please Enter the Semester you would like to have the GPA calculated for\n";
+cin.ignore();
+getline(cin, dSemester);
+int dHours = 0;
+double dGPA = 0;
+for (int x = 0; x < numClass; x++) {
+if (semester[x] == dSemester) {
+double dScore = 0;
+dHours += arrayHours[x];
+dScore += score[x];
+dGPA += score[x] * arrayHours[x];
+}
+}
+
+cout << "The GPA for " << dSemester << " is " << dGPA / dHours << endl;
+cout << endl;
+}
+
+void choiceE(int &num, string courseName[10], string semester[10], string inputCourse[10], char grade[10], double score[10], int &inputHours, int arrayHours[10], double &gpaScore, int &hours, int &numClass) {
+if (num >= 10) {
+cout << "You have gone past the bounds of the array and can no longer add any classes\n";
+cout << endl;
+return;
+}
+cout << endl;
+cout << "Please Enter The Name Of Class " << num + 1 << endl;
+cin.ignore();
+getline(cin, courseName[num]);
+
+cout << "Please Enter The Semester You Took " << courseName[num] << " (i.e Fall 2016)\n";
+getline(cin, semester[num]);
+
+cout << "Please Enter The Course Number For " << courseName[num] << " (i.e CSCE 2004, MATH 2564, CSCE 2114)\n";
+getline(cin, inputCourse[num]);
+
+cout << "Please Enter The Letter Grade (A,B,C,D,F) For " << courseName[num] << endl;
+cin >> grade[num];
+cin.ignore();
+
+while (grade[num] != 'A' && grade[num] != 'B' && grade[num] != 'C' && grade[num] != 'D' && grade[num] != 'F' || (grade[num] == 'W' && grade[num] == 'I')) {
+cout << "There Seems To Have Been An Error. Please input a Letter Grade" << endl;
+if (grade[num] == 'W')
+cout << "What would be the point of adding a class if you got a W\n";
+if (grade[num] == 'I')
+cout << "What would be the point in adding a class if you got an I\n";
+cin >> grade[num];
+cin.ignore();
+}
+
+if (grade[num] == 'A')
+score[num] = 4.0;
+else if (grade[num] == 'B')
+score[num] = 3.0;
+else if (grade[num] == 'C')
+score[num] = 2.0;
+else if (grade[num] == 'D')
+score[num] = 1.0;
+else if (grade[num] == 'F')
+score[num] = 0.0;
+
+cout << "Please Enter The Number Of Hours For " << courseName[num] << endl;
+cin >> inputHours;
+cin.ignore();
+
+while (inputHours <= 0) {
+cout << "There Seems To Have Been An Error. Please Enter The Number Of Hours For " << courseName[num] << " (1-5)" << endl;
+cin >> inputHours;
+cin.ignore();
+}
+while (inputHours >= 6) {
+cout << "There Seems To Have Been An Error. Please Enter The Number Of Hours For Class " << num << " (1-5)" << endl;
+cin >> inputHours;
+cin.ignore();
+}
+arrayHours[num] = inputHours;
+
+gpaScore += score[num] * inputHours;
+hours = hours + inputHours;
+num = num + 1;
+numClass = numClass + 1;
+
+}
+void menuChoice(char &userInput) {
+cout << "Welcome to the interactive menu-driven part of the GPA and Course storage program.\n";
+cout << "Please enter the character next to the choice you wish to pick.\n";
+cout << "Here are your options: \n";
+cout << "A(a): Compute the GPA of all courses.\n";
+cout << "B(b): List all courses.\n";
+cout << "C(c): Compute the total credit hours of the courses with grade D.\n";
+cout << "D(d): Compute the GPA for a particular semester.\n";
+cout << "E(e): Add another course to the list.\n";
+cout << "Q(q): Quit the Program.\n";
+cout << endl;
+cout << "Please choose from the following options\n";
+cin >> userInput;
+}
+
+
+int main()
+{
+double GPA = 0;
+int inputClass = 0;
+double accumulator = 0;
+string courseName[10];
+string inputCourse[10];
+int hours = 0;
+char grade[10];
+double score[10];
+double gpaScore = 0;
+int numClass = 0;
+int num = 0;
+int inputHours;
+char userInput;
+string inputSemester;
+string semester[10];
+int total = 0;
+int arrayHours[10];
+string dSemester;
+
+cout << "Welcome to the GPA Calculator\n";
+cout << "Please Enter How Many Classes You Are Taking\n";
+cin >> inputClass;
+cin.ignore();
+
+numClass = inputClass;
+
+while (inputClass <= 0 || inputClass > 10) {
+cout << "Please Input A Positive Whole Number That Is Less Than 10\n";
+cin >> inputClass;
+cin.ignore();
+}
+
+while (num < inputClass) {
+cout << "Please Enter The Name Of Class " << num + 1 << endl;
+getline(cin, courseName[num]);
+
+cout << "Please Enter The Semester You Took " << courseName[num] << " (i.e Fall 2016)\n";
+getline(cin, semester[num]);
+
+cout << "Please Enter The Course Number For " << courseName[num] << " (i.e CSCE 2004, MATH 2564, CSCE 2114)\n";
+getline(cin, inputCourse[num]);
+
+cout << "Please Enter The Letter Grade (A,B,C,D,F,W,I) For " << courseName[num] << endl;
+cin >> grade[num];
+cin.ignore();
+
+while (grade[num] != 'A' && grade[num] != 'B' && grade[num] != 'C' && grade[num] != 'D' && grade[num] != 'F' && grade[num] != 'W' && grade[num] != 'I') {
+cout << "There Seems To Have Been An Error. Please input a Letter Grade" << endl;
+cin >> grade[num];
+cin.ignore();
+}
+
+if (grade[num] == 'A')
+score[num] = 4.0;
+else if (grade[num] == 'B')
+score[num] = 3.0;
+else if (grade[num] == 'C')
+score[num] = 2.0;
+else if (grade[num] == 'D')
+score[num] = 1.0;
+else if (grade[num] == 'F')
+score[num] = 0.0;
+else if (grade[num] == 'W') {
+num = num + 1;
+continue;
+}
+else if (grade[num] == 'I') {
+num = num + 1;
+continue;
+}
+
+cout << "Please Enter The Number Of Hours For " << courseName[num] << endl;
+cin >> inputHours;
+cin.ignore();
+
+while (inputHours <= 0) {
+cout << "There Seems To Have Been An Error. Please Enter The Number Of Hours For " << courseName[num] << " (1-5)" << endl;
+cin >> inputHours;
+}
+while (inputHours >= 5) {
+cout << "There Seems To Have Been An Error. Please Enter The Number Of Hours For Class " << num << " (1-5)" << endl;
+cin >> inputHours;
+}
+arrayHours[num] = inputHours;
+
+gpaScore += score[num] * inputHours;
+hours = hours + inputHours;
+num = num + 1;
+}
+
+do {
+menuChoice(userInput);
+
+while (!(userInput == 'A' || userInput == 'a') && !(userInput == 'B' || userInput == 'b') && !(userInput == 'C' || userInput == 'c') && !(userInput == 'D' || userInput == 'd') && !(userInput == 'E' || userInput == 'e') && !(userInput == 'Q' || userInput == 'q')) {
+cout << "Your input is invalid.\n";
+cout << endl;
+menuChoice(userInput);
+}
+if (userInput == 'A' || userInput == 'a') {
+choiceA(GPA, gpaScore, hours);
+}
+
+if (userInput == 'B' || userInput == 'b') {
+choiceB(numClass, courseName, semester, inputCourse, grade, arrayHours);
+
+}
+
+if (userInput == 'C' || userInput == 'c') {
+choiceC(numClass, score, total, arrayHours);
+}
+
+if (userInput == 'D' || userInput == 'd') {
+choiceD(numClass, dSemester, semester, arrayHours, score);
+}
+
+if (userInput == 'E' || userInput == 'e') {
+choiceE(num, courseName, semester, inputCourse, grade, score, inputHours, arrayHours, gpaScore, hours, numClass);
+}
+
+if (userInput == 'Q' || userInput == 'q') {
+cout << "Thank You For Using. Good Bye.\n";
+cout << "\n======terminating...======\n";
+}
+
+} while (userInput != 'Q' && userInput != 'q');
+
+return 0;
+}

@@ -1,0 +1,2 @@
+How to copy from turing in SSH:
+scp bafasse@turing.uark.edu:/home/csce2004/(whichever directory) .
